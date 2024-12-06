@@ -4,11 +4,13 @@ import { UserForm } from "../PopUserForm/UserForm";
 import { useMutation } from "@tanstack/react-query";
 import smApi from "../../api/smApi";
 import { ProfileImageChange } from "../ProfileChangeImage/ProfileImageChange";
+import ChangePassword from "../ChangePassword/ChangePassword";
 
 const UserCard = () => {
   const { userInformation, setUserInformation } = useZustand()
   const [isopen, setIsOpen] = useState(false)
   const [isclosed, setIsClosed] =useState(false)
+  const [isChangePassword, setIsChangePassword] = useState(false)
   const getUserDetailsById = useMutation({
     mutationFn: smApi.getUserDetailsById
   })
@@ -19,6 +21,8 @@ const UserCard = () => {
   useEffect(() => {
     getUserData()
   }, [])
+
+  console.log("user",userInformation)
 
   const getUserData = () => {
     const storeData = localStorage.getItem("userData")
@@ -59,8 +63,17 @@ const UserCard = () => {
     }
    
   }
+
+  const passwordChange=(data)=>{
+    setIsChangePassword(data)
+  }
+
+  const logout=()=>{
+    localStorage.removeItem('userData')
+    window.location.href = "/login"
+  }
   return (
-    <div className="w-[20%] bg-white shadow-lg rounded-lg p-6 ">
+    <div className="w-[20%] hidden md:block   bg-white shadow-lg rounded-lg p-6 ">
 
       <div className="flex flex-col items-center">
         <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-blue-500 cursor-pointer" onClick={()=>setIsClosed(!isclosed)}>
@@ -76,9 +89,9 @@ const UserCard = () => {
         <p className="text-gray-400 text-lg  py-2 ">Followers  {userInformation?.followers?.length}</p>
         <p className="text-gray-400 text-lg">Following  {userInformation?.following?.length}</p>
 
-      </div>
+      
 
-
+        </div>
       <hr className="my-4" />
 
       <ul className="space-y-4">
@@ -90,7 +103,8 @@ const UserCard = () => {
         </li>
         <li className="flex items-center gap-3 text-gray-600 cursor-pointer hover:text-blue-500">
           <i className="bx bx-briefcase text-lg"></i>
-          <span>Password</span>
+          <span onClick={()=>setIsChangePassword(!isChangePassword)}>Password</span>
+          {isChangePassword && <><ChangePassword  passwordChange={passwordChange}  data={isChangePassword}/></>}
         </li>
         {/* <li className="flex items-center gap-3 text-gray-600 cursor-pointer hover:text-blue-500">
           <i className="bx bx-book text-lg"></i>
@@ -98,10 +112,11 @@ const UserCard = () => {
         </li> */}
         <li className="flex items-center gap-3 text-gray-600 cursor-pointer hover:text-blue-500">
           <i className="bx bx-cog text-lg"></i>
-          <span>Logout</span>
+          <span onClick={logout}>Logout</span>
         </li>
       </ul>
     </div>
+   
   )
 
 }

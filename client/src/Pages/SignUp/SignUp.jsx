@@ -47,7 +47,7 @@ const SignUp = () => {
         onSuccess: (data) => {
           localStorage.setItem("userData", JSON.stringify({ data: data.data, token: data.token }));
       
-          navigate("/home")
+          navigate("/")
 
           alert("Form submitted successfully!");
         }
@@ -67,6 +67,13 @@ const SignUp = () => {
   const validateForm = () => {
     const newErrors = {};
 
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{6,}$/;
+    
+    // if (!passwordRegex.test(newPassword)) {
+    //    setError("Password must be at least 6 characters long, contain one uppercase letter, one lowercase letter, and one digit.")
+    //     return;
+    // }
+
     if (!formData.username) {
       newErrors.username = "Username is required";
     }
@@ -80,8 +87,8 @@ const SignUp = () => {
 
     if (!formData.password) {
       newErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters long";
+    } else if (passwordRegex(formData.password)) {
+      newErrors.password = "Password must be at least 6 characters long, contain one uppercase letter, one lowercase letter, and one digit.";
     }
 
 

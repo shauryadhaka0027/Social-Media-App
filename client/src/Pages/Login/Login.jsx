@@ -2,9 +2,11 @@ import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import smApi from "../../api/smApi";
+import { notification } from "antd";
 
 const Login = () => {
    const navigate=useNavigate()
+   const [error,setError]=useState("")
     const navigateSignUp=()=>{
       navigate("/signUp")
     }
@@ -22,12 +24,34 @@ const Login = () => {
 
     const onSubmitForm=(e)=>{
       e.preventDefault();
+      if(!formData?.email ||!formData?.password){
+        alert("Please fill all the fields")
+        return
+
+      }
+    //   const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{6,}$/;
+    //   if (!passwordRegex.test(formData?.password)) {
+    //    setError("Password must be at least 6 characters long, contain one uppercase letter, one lowercase letter, and one digit.")
+    //     return;
+    // }
       userLogin.mutate(formData,{onSuccess:(data)=>{
-        alert("Login")
+        // alert("Login")
+        notification.success({
+            type:"success",
+            message: "Login Successful"
+        })
         localStorage.setItem("userData", JSON.stringify({ data: data.data, token: data.token }));
-        navigate("/home")
-      }})
-       console.log("onSubmitForm",formData)
+        navigate("/")
+        
+      },
+       onError:(data)=>{
+        notification.error({
+          type:"error",
+          message: data.response?.data?.msg || "Invalid Credentials"
+        })
+       }
+    })
+     
     }
   return (
     <div className="min-h-screen flex items-center justify-center bg-blue-100">
@@ -69,6 +93,7 @@ const Login = () => {
                 className="w-full p-3 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <i className="bx bxs-lock-alt absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-xl"></i>
+              {error && <p className="text-red-500 text-sm">{error}</p>}
             </div>
             
             <div className="text-right mb-4">

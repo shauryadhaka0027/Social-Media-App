@@ -11,12 +11,13 @@ export const apiUrl = import.meta.env.VITE_API;
 // Create an Axios instance
 export const fetchApi = axios.create({
   baseURL: apiUrl,
+  withCredentials: true, 
   headers: {
-    "Content-Type": "application/json", // Use JSON as the default content type
+    "Content-Type": "application/json",
     Accept: "application/json",
-  
   },
 });
+
 
 // Axios Interceptor to attach Authorization token
 // fetchApi.interceptors.request.use((config) => {
@@ -168,6 +169,26 @@ class FetchData {
       return response.data;
     } catch (error) {
       console.error("Error while updating user profile:", error);
+      throw error;
+    }
+  }
+
+  async updateUserPassword(data){
+    try {
+      const response = await fetchApi.patch(ApiUrl.user.userPasswordChange,data);
+      return response.data;
+    } catch (error) {
+      console.error("Error while updating user password:", error);
+      throw error;
+    }
+  }
+
+  async getNotifications(data){
+    try {
+      const response = await fetchApi.post(ApiUrl.notification.getUserNotification,data);
+      return response.data;
+    } catch (error) {
+      console.error("Error while getting notifications:", error);
       throw error;
     }
   }

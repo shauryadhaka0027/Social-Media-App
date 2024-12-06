@@ -1,3 +1,4 @@
+
 export const ApiUrl={
     auth:{
         signupUser:"/user/signup",
@@ -9,7 +10,8 @@ export const ApiUrl={
         addFollowing:"/user/addFollowing",
         getUserById:"/user/getUserById",
         userUnfollow:"/user/userUnfollow",
-        userProfileUpdate:"/user/updateUser"
+        userProfileUpdate:"/user/updateUser",
+        userPasswordChange:"/user/updatePassword"
     },
     post:{
         postUser:"/user/postData",
@@ -17,5 +19,9 @@ export const ApiUrl={
         getLikesPost:"/user/getLikesPost",
         getCommentsPost:"/user/getCommentsPost",
         deleteUserPost:"/user/deleteUserPost"
+    },
+    notification:{
+        getUserNotification:"/user/getNotifications",
+      
     }
 }

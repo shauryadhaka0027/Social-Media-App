@@ -10,22 +10,23 @@ export const PopConfirm = ({handleDelete,data}) => {
     })
     const confirm = (e) => {
         console.log(e);
-        deleteUserPost.mutate({postId:data._id},{onSuccess:(data)=>{
-            message.success('Deleted successfully');
-            handleDelete()
-        }})
+        handleDelete(data?._id)
+        // deleteUserPost.mutate({postId:data._id},{onSuccess:(data)=>{
+        //     message.success('Deleted successfully');
+            
+        // }})
        
       };
       const cancel = (e) => {
         console.log(e);
-        message.error('Click on No');
+        // message.error('Click on No');
       };
      
   return (
     <div key={data?._id}>
       <Popconfirm
     title="Delete the task"
-    description="Are you sure to delete this task?"
+    description="Are you sure to delete this Post?"
     onConfirm={confirm}
     key={data?._id}
     onCancel={cancel}
